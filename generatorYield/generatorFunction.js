@@ -63,19 +63,26 @@ const getCompany = async () => {
 /**
  * application
  */
+
+const getMap = new Map([
+  ["user", getUser],
+  ["brand", getBrand],
+  ["company", getCompany],
+]);
+
 async function* clientFilterGenerator() {
   const baseConfig = {
     token: "aoeuidhtnspyfgcqjkxbm",
   };
 
   const nextValue = yield baseConfig;
-  const user = nextValue === "user" ? await getUser() : undefined;
+  const user = await getMap.get(nextValue)();
 
   const nextValue2 = yield { user };
-  const company = nextValue2 === "company" ? await getCompany() : undefined;
+  const company = await getMap.get(nextValue2)();
 
   const nextValue3 = yield { company };
-  const brand = nextValue3 === "brand" ? await getBrand() : undefined;
+  const brand = await getMap.get(nextValue3)();
 
   return { brand };
 }
