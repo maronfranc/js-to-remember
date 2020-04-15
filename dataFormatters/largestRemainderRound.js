@@ -1,4 +1,4 @@
-const PERCENT = 100;
+const PERCENTAGE = 100;
 const ONE = 1;
 const ZERO = 0;
 const sumHelper = (arr) => arr.reduce((acc, val) => acc + val, ZERO);
@@ -14,17 +14,24 @@ const separateDecimalsFromArrayOfNumbers = (arrNumbers) => {
   return [integers, decimals];
 };
 
+/**
+ * get array of float numbers separate its decimals and
+ * increment largest integers once until their sum is 100%.
+ *
+ * @param {number[]} arrNumbers
+ */
 const largestRemainderRound = (arrNumbers) => {
   let [integers, decimals] = separateDecimalsFromArrayOfNumbers(arrNumbers);
 
   const roundedSum = sumHelper(integers);
-  const diff = PERCENT - roundedSum;
-
+  const diff = PERCENTAGE - roundedSum;
   const decimalsCopy = [...decimals];
+
+  // find largest decimals indexes and increment integer in array
   decimalsCopy.sort((a, b) => b - a);
   for (let i = ZERO; i < diff; i++) {
-    const index = decimals.indexOf(decimalsCopy[i]);
-    integers[index] += ONE;
+    const largestDecimalIndex = decimals.indexOf(decimalsCopy[i]);
+    integers[largestDecimalIndex] += ONE;
   }
 
   return integers;
