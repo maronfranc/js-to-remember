@@ -18,9 +18,9 @@ type Obj = Record<any, any>;
  * @see https://dev.to/pffigueiredo/typescript-utility-keyof-nested-object-2pa3
  */
 export type NestedKeyOf<ObjectType extends Obj> = {
-  [Key in keyof ObjectType & (string | number)]:
-  ObjectType[Key] extends infer O ? O extends Obj
-  ? `${Key}` | `${Key}.${NestedKeyOf<O>}`
-  : `${Key}`
-  : `${Key}`;
+  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends infer ObjectValue
+    ? ObjectValue extends Obj
+      ? `${Key}` | `${Key}.${NestedKeyOf<ObjectValue>}`
+      : `${Key}`
+    : `${Key}`;
 }[keyof ObjectType & (string | number)];
