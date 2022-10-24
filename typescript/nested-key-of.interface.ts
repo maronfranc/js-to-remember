@@ -15,11 +15,14 @@ type Obj = Record<any, any>;
  * type Path = NestedKeyOf<typeof obj>;
  * // "id" | "nested" | "nested.id" | "nested.deepNested" | "nested.deepNested.id"
  * ```
+ * Used as reference and improved @pffigueiredo version.
  * @see https://dev.to/pffigueiredo/typescript-utility-keyof-nested-object-2pa3
  */
 export type NestedKeyOf<ObjectType extends Obj> = {
   [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends infer ObjectValue
-    ? ObjectValue extends Obj
+    ? ObjectValue extends Array<Obj>
+      ? `${Key}.${NestedKeyOf<ObjectValue[number]>}`
+      : ObjectValue extends Obj
       ? `${Key}` | `${Key}.${NestedKeyOf<ObjectValue>}`
       : `${Key}`
     : `${Key}`;
